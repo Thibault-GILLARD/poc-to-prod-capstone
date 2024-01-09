@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Text Prediction</h1>
+    <form id="predictionForm">
+        <label for="text">Enter text:</label><br>
+        <textarea id="text" name="text" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Predict">
+    </form>
+    <div id="predictionResult"></div>
+
+    <script>
+        $(document).ready(function(){
+            $('#predictionForm').submit(function(event){
+                event.preventDefault(); // Prevent default form submission
+
+                // Get the text from the form
+                var formData = $(this).serialize();
+
+                // Send AJAX POST request to Flask app
+                $.ajax({
+                    type: 'POST',
+                    url: '/',
+                    data: formData,
+                    success: function(response){
+                        // Display prediction result in the div
+                        $('#predictionResult').text("Prediction: " + response.predictions);
+                    },
+                    error: function(error){
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
